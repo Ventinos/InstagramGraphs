@@ -81,10 +81,11 @@ def scrape_followers(bot, username, user_input):
         time.sleep(1)
 
     users = list(users)[:user_input]  # Trim the user list to match the desired number of followers
-
-    print(f"[Info] - Saving followers for {username}...")
-    with open(f'{username}_followers.txt', 'a') as file:
-        file.write('\n'.join(users) + "\n")
+    
+    #Nao precisamos salvar os seguidores em arquivo:
+    #print(f"[Info] - Saving followers for {username}...")
+    #with open(f'{username}_followers.txt', 'a') as file:
+        #file.write('\n'.join(users) + "\n")
 
     #teste:
     return users
@@ -123,7 +124,7 @@ def scrape():
     bot.quit()
     
     #followers eh uma lista de listas de seguidores,
-    #followers[0] tem os seguidores do username da relacao
+    #followers tem os seguidores do username da relacao
     #retorno de uma dupla de username e seus seguidores
     #relacao = (nome da conta, lista de seguidores) 
     relacao = []
