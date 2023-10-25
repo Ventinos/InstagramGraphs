@@ -1,3 +1,4 @@
 python-decouple
 selenium==3.14.1
 webdriver_manager
+beautifulsoup4

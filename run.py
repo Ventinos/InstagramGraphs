@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager as CM
 from selenium.common.exceptions import NoSuchElementException
-
+from bs4 import BeautifulSoup
 
 def save_credentials(username, password):
     with open('credentials.txt', 'w') as file:
@@ -62,25 +62,33 @@ def login(bot, username, password):
 def scrape_followers(bot, username, user_input):
     bot.get(f'https://www.instagram.com/{username}/')
     time.sleep(3.5)
+
+    #extracting max followers numbers
+    source=bot.page_source
+    soup = BeautifulSoup(source, 'html.parser')
+    links = soup.find_all('span',class_='_ac2a')
+    maxFollowers = int(links[1].get('title'))
+    
     WebDriverWait(bot, TIMEOUT).until(EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '/followers')]"))).click()
     time.sleep(2)
     print(f"[Info] - Scraping followers for {username}...")
-
+  
     users = set()
 
-    while len(users) < user_input:
+    while len(users) < maxFollowers:
         followers = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
         for i in followers:
             if i.get_attribute('href'):
                 users.add(i.get_attribute('href').split("/")[3])
+                print(len(users),'/{maxFollowers}')
             else:
                 continue
 
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
 
-    users = list(users)[:user_input]  # Trim the user list to match the desired number of followers
+   # users = list(users)[:user_input]  # Trim the user list to match the desired number of followers
 
     print(f"[Info] - Saving followers for {username}...")
     with open(f'{username}_followers.txt', 'a') as file:
