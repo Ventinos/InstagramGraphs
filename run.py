@@ -67,7 +67,9 @@ def scrape_followers(bot, username, user_input):
     source=bot.page_source
     soup = BeautifulSoup(source, 'html.parser')
     links = soup.find_all('span',class_='_ac2a')
-    maxFollowers = int(links[1].get('title'))
+    for i in range(len(links)):
+        if str(links[i].get('title')).isnumeric():
+            maxFollowers = int(links[i].get('title'))
     
     WebDriverWait(bot, TIMEOUT).until(EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '/followers')]"))).click()
     time.sleep(2)
@@ -75,7 +77,7 @@ def scrape_followers(bot, username, user_input):
   
     users = set()
 
-    while len(users) < maxFollowers:
+    while len(users) < 300:
         followers = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
         for i in followers:
