@@ -64,13 +64,19 @@ def scrape_followers(bot, username, user_input):
     time.sleep(3.5)
 
     #extracting max followers numbers
+    
     source=bot.page_source
     soup = BeautifulSoup(source, 'html.parser')
     links = soup.find_all('span',class_='_ac2a')
     for i in range(len(links)):
         if str(links[i].get('title')).isnumeric():
             maxFollowers = int(links[i].get('title'))
-    
+    #_aady class
+    #vendo se a conta eh privada:
+    private = soup.find_all('div',class_='_aady')
+    if len(private)>0 :
+        print('foooi')
+
     WebDriverWait(bot, TIMEOUT).until(EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '/followers')]"))).click()
     time.sleep(2)
     print(f"[Info] - Scraping followers for {username}...")
@@ -109,8 +115,8 @@ def scrape():
 
     user_input = 1100
 
-    usernames = ["comppet.ufu", "bateriacomputaria", "aaacompufu"]
-
+    #usernames = ["comppet.ufu", "bateriacomputaria", "aaacompufu"]
+    usernames = ['pedro_ara_ri']
     options = webdriver.ChromeOptions()
     # options.add_argument("--headless")
     options.add_argument('--no-sandbox')
