@@ -32,7 +32,7 @@ def scrape_followers(bot, username):
     flag = True
     count = 0
 
-    while flag:
+    while flag and len(users)<1500:
         prev = len(users)
         followers = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
@@ -46,7 +46,7 @@ def scrape_followers(bot, username):
         if len(users) == prev:
             count += 1
 
-        flag = count < 6
+        flag = count < 3
 
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
