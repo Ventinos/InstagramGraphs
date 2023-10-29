@@ -1,4 +1,4 @@
 python-decouple
-selenium==3.14.1
+selenium==4.9.0
 webdriver_manager
 beautifulsoup4
