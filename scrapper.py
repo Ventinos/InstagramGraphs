@@ -56,6 +56,7 @@ def scrape_followers(bot, username, user_input):
 def scrape():
     credentials = preReqs.load_credentials()
     followers = []
+    
     if credentials is None:
         username, password = preReqs.prompt_credentials()
     else:
@@ -83,7 +84,7 @@ def scrape():
         user = user.strip()
         followers.append(scrape_followers(bot, user, user_input))
 
-    bot.quit()
+    #bot.quit()
     
     #followers eh uma lista de listas de seguidores,
     #followers tem os seguidores do username da relacao
@@ -92,36 +93,16 @@ def scrape():
     relacao = []
     for i in range(len(usernames)):
         relacao.append((usernames[i],followers[i]))
-    return relacao
+    return relacao,bot
 
-def scrapeFollowing(accounts,user_input):
-    credentials = preReqs.load_credentials()
+def scrapeFollowing(bot,accounts,user_input):
     following = []
-    if credentials is None:
-        username, password = preReqs.prompt_credentials()
-    else:
-        username, password = credentials
-
     usernames = accounts
-    options = webdriver.ChromeOptions()
-    #adicionei isso aqui pra n mostrar o processo no chrome rolando:
-    #options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument("--log-level=3")
-    mobile_emulation = {
-        "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/90.0.1025.166 Mobile Safari/535.19"}
-    options.add_experimental_option("mobileEmulation", mobile_emulation)
-
-    bot = webdriver.Chrome(executable_path=CM().install(), options=options)
-
-    preReqs.login(bot, username, password)
-
+    
     #adicionando listas:
     for user in usernames:
         user = user.strip()
         following.append(scrape_following(bot, user, user_input,accounts))
-
-    bot.quit()
     
     #followers eh uma lista de listas de seguidores,
     #followers tem os seguidores do username da relacao
@@ -132,9 +113,17 @@ def scrapeFollowing(accounts,user_input):
         relacao.append((usernames[i],following[i]))
     return relacao
 
+def testPopUp(bot):
+    try:
+        bot.find_element(By.XPATH, '//button[@class="_a9-- _a9_1"]').click()
+    except:
+        print('No popups this time!')
+
 def scrape_following(bot, username, user_input, accounts):
+    #sim isso ta bem gambiarra, ngm mandou os cara dar 3 popup seguido:
     bot.get(f'https://www.instagram.com/{username}/')
     time.sleep(3.5)
+    testPopUp(bot)
     users = set()
     
     # vendo se a conta eh privada:
@@ -152,6 +141,7 @@ def scrape_following(bot, username, user_input, accounts):
     while len(users) < user_input:
         following = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
+    #falta adicionar um limite aqui, ou o flag...
         for i in following:
             if i.get_attribute('href'):
                 accName=i.get_attribute('href').split("/")[3]
