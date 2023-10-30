@@ -66,7 +66,9 @@ def scrape():
 
     usernames = input("[Starting Points] - Enter the Instagram usernames you want to scrape (separated by commas): ").split(",")
 
-    options = webdriver.ChromeOptions()
+    #options = webdriver.ChromeOptions()
+    options = webdriver.EdgeOptions()
+
     #adicionei isso aqui pra n mostrar o processo no chrome rolando:
     #options.add_argument('--headless')
     options.add_argument('--no-sandbox')
@@ -75,7 +77,8 @@ def scrape():
         "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/90.0.1025.166 Mobile Safari/535.19"}
     options.add_experimental_option("mobileEmulation", mobile_emulation)
 
-    bot = webdriver.Chrome(executable_path=CM().install(), options=options)
+    #bot = webdriver.Chrome(executable_path=CM().install(), options=options)
+    bot = webdriver.Edge( options=options)
 
     preReqs.login(bot, username, password)
 
@@ -134,8 +137,9 @@ def scrape_following(bot, username, user_input, accounts):
         print(f"[Info] - {username} is a private account.")
         return users
     
+    #bot.find_element(By.XPATH, "//a[contains(@href, '/following')]").click()
     WebDriverWait(bot, TIMEOUT).until(EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '/following')]"))).click()
-    time.sleep(2)
+    time.sleep(3.5)
     print(f"[Info] - Scraping following for {username}...")
 
     while len(users) < user_input:
