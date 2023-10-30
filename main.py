@@ -31,7 +31,7 @@ def main():
         file = open(filename, 'wb')
         pickle.dump(FollowersUnion, file)
         print(f"[Info] - Collective followers list saved as {filename}")
-        graph = [scrapper.scrapeFollowing(bot, FollowersUnion, 99)]
+        graph = [scrapper.scrapeFollowing(bot, FollowersUnion, 999)]
         bot.quit()
         filename = input('[Required] - Write the name of the new graph file: ')
         file = open(filename, 'wb')
