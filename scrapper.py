@@ -1,5 +1,4 @@
 import time
-import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,30 +6,30 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager as CM
-from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 import preReqs
 
 TIMEOUT = 15
+OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs'}
+
 
 def scrape_followers(bot, username, user_input):
     bot.get(f'https://www.instagram.com/{username}/')
     time.sleep(3.5)
     users = set()
     
-    # vendo se a conta eh privada:
-    source = bot.page_source
-    soup = BeautifulSoup(source, 'html.parser')
-    private = soup.find_all('div', class_='_aady')
-    if len(private) > 0:
-        print(f"[Info] - {username} is a private account.")
-        return users
+    #a gente nunca vai pegar seguidor de conta privada por acidente então tirei a verificação
     
     WebDriverWait(bot, TIMEOUT).until(EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '/followers')]"))).click()
     time.sleep(2)
     print(f"[Info] - Scraping followers for {username}...")
 
-    while len(users) < user_input:
+    flag = True
+    count = 0
+
+    while flag and len(users) < user_input:
+        print(f"{len(users)}/{user_input}")
+        prev = len(users)
         followers = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
         for i in followers:
@@ -39,17 +38,17 @@ def scrape_followers(bot, username, user_input):
             else:
                 continue
 
+        if len(users) == prev:
+            count += 1
+
+        flag = count < 3
+
+        users = users.difference(OITO_ODIADOS)
+        users = users.difference(preReqs.load_credentials()[0])
+
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
 
-    users = list(users)[:user_input]  # Trim the user list to match the desired number of followers
-    
-    #Nao precisamos salvar os seguidores em arquivo:
-    #print(f"[Info] - Saving followers for {username}...")
-    #with open(f'{username}_followers.txt', 'a') as file:
-        #file.write('\n'.join(users) + "\n")
-
-    #teste:
     return set(users)
 
 
@@ -66,9 +65,8 @@ def scrape():
 
     usernames = input("[Starting Points] - Enter the Instagram usernames you want to scrape (separated by commas): ").split(",")
 
-    #options = webdriver.ChromeOptions()
     options = webdriver.EdgeOptions()
-
+    #options = webdriver.ChromeOptions()
     #adicionei isso aqui pra n mostrar o processo no chrome rolando:
     #options.add_argument('--headless')
     options.add_argument('--no-sandbox')
@@ -77,8 +75,8 @@ def scrape():
         "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/90.0.1025.166 Mobile Safari/535.19"}
     options.add_experimental_option("mobileEmulation", mobile_emulation)
 
+    bot = webdriver.Edge(options=options)
     #bot = webdriver.Chrome(executable_path=CM().install(), options=options)
-    bot = webdriver.Edge( options=options)
 
     preReqs.login(bot, username, password)
 
@@ -86,8 +84,6 @@ def scrape():
     for user in usernames:
         user = user.strip()
         followers.append(scrape_followers(bot, user, user_input))
-
-    #bot.quit()
     
     #followers eh uma lista de listas de seguidores,
     #followers tem os seguidores do username da relacao
@@ -95,17 +91,18 @@ def scrape():
     #relacao = (nome da conta, lista de seguidores) 
     relacao = []
     for i in range(len(usernames)):
-        relacao.append((usernames[i],followers[i]))
-    return relacao,bot
+        relacao.append((usernames[i], followers[i]))
+    return relacao, bot
 
-def scrapeFollowing(bot,accounts,user_input):
+
+def scrapeFollowing(bot, accounts, user_input):
     following = []
     usernames = accounts
-    
+
     #adicionando listas:
     for user in usernames:
         user = user.strip()
-        following.append(scrape_following(bot, user, user_input,accounts))
+        following.append(scrape_followings(bot, user, user_input, accounts))
     
     #followers eh uma lista de listas de seguidores,
     #followers tem os seguidores do username da relacao
@@ -113,8 +110,9 @@ def scrapeFollowing(bot,accounts,user_input):
     #relacao = (nome da conta, lista de seguidores) 
     relacao = []
     for i in range(len(usernames)):
-        relacao.append((usernames[i],following[i]))
+        relacao.append((usernames[i], following[i]))
     return relacao
+
 
 def testPopUp(bot):
     try:
@@ -122,8 +120,8 @@ def testPopUp(bot):
     except:
         print('No popups this time!')
 
-def scrape_following(bot, username, user_input, accounts):
-    #sim isso ta bem gambiarra, ngm mandou os cara dar 3 popup seguido:
+
+def scrape_followings(bot, username, user_input, accounts):
     bot.get(f'https://www.instagram.com/{username}/')
     time.sleep(3.5)
     testPopUp(bot)
@@ -137,34 +135,39 @@ def scrape_following(bot, username, user_input, accounts):
         print(f"[Info] - {username} is a private account.")
         return users
     
-    #bot.find_element(By.XPATH, "//a[contains(@href, '/following')]").click()
     WebDriverWait(bot, TIMEOUT).until(EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '/following')]"))).click()
-    time.sleep(3.5)
+    time.sleep(2)
     print(f"[Info] - Scraping following for {username}...")
 
-    while len(users) < user_input:
+    flag = True
+    count = 0
+    lixo = 0
+
+    while len(users) < user_input and flag:
+        print(f"{len(users)}/{user_input}")
         following = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
-    #falta adicionar um limite aqui, ou o flag...
+        prev = lixo
+        prev2 = len(users)
+
         for i in following:
             if i.get_attribute('href'):
-                accName=i.get_attribute('href').split("/")[3]
+                accName = i.get_attribute('href').split("/")[3]
                 if accName in accounts:
                     users.add(accName)
+                else:
+                    lixo += 1
             else:
                 continue
+
+        if lixo == prev and len(users) == prev2 and (prev + prev2) < 1999:
+            count += 1
+
+        users = users.difference(OITO_ODIADOS)
+        users = users.difference(preReqs.load_credentials()[0])
+        flag = count < 3
 
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
 
-    users = list(users)[:user_input]  # Trim the user list to match the desired number of followers
-    
-    #Nao precisamos salvar os seguidores em arquivo:
-    #print(f"[Info] - Saving followers for {username}...")
-    #with open(f'{username}_followers.txt', 'a') as file:
-        #file.write('\n'.join(users) + "\n")
-
-    #teste:
     return set(users)
-
-

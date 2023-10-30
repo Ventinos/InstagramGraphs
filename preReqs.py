@@ -1,9 +1,11 @@
 import time
 import os
+from selenium.common.exceptions import NoSuchElementException
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
+from webdriver_manager.chrome import ChromeDriverManager as CM
 
 
 def save_credentials(username, password):
@@ -21,6 +23,18 @@ def load_credentials():
             return lines[0].strip(), lines[1].strip()
 
     return None
+
+
+def generate_bot():
+    #options = webdriver.ChromeOptions()
+    options = webdriver.EdgeOptions()
+    options.add_argument('--no-sandbox')
+    options.add_argument("--log-level=3")
+    mobile_emulation = {
+        "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/90.0.1025.166 Mobile Safari/535.19"}
+    options.add_experimental_option("mobileEmulation", mobile_emulation)
+    #return webdriver.Chrome(executable_path=CM().install(), options=options)
+    return webdriver.Edge(options=options)
 
 
 def prompt_credentials():
