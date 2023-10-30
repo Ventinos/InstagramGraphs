@@ -39,15 +39,16 @@ def scrape_followers(bot, username, user_input):
                 continue
 
         if len(users) == prev:
+            print(count)
             count += 1
 
         flag = count < 3
 
-        users = users.difference(OITO_ODIADOS)
-        users = users.difference(preReqs.load_credentials()[0])
-
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
+
+    users = users.difference(OITO_ODIADOS)
+    users = users.difference(preReqs.load_credentials()[0])
 
     return set(users)
 
@@ -163,11 +164,12 @@ def scrape_followings(bot, username, user_input, accounts):
         if lixo == prev and len(users) == prev2 and (prev + prev2) < 1999:
             count += 1
 
-        users = users.difference(OITO_ODIADOS)
-        users = users.difference(preReqs.load_credentials()[0])
         flag = count < 3
 
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
+
+    users = users.difference(OITO_ODIADOS)
+    users = users.difference(preReqs.load_credentials()[0])
 
     return set(users)
