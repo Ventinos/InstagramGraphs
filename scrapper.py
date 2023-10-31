@@ -42,13 +42,13 @@ def scrape_followers(bot, username, user_input):
             print(count)
             count += 1
 
-        flag = count < 3
+        flag = count < 5
 
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
 
     users = users.difference(OITO_ODIADOS)
-    users = users.difference(preReqs.load_credentials()[0])
+    users = users.difference(username)
 
     return set(users)
 
@@ -146,6 +146,7 @@ def scrape_followings(bot, username, user_input, accounts):
 
     while len(users) < user_input and flag:
         print(f"{len(users)}/{user_input}")
+        print(f"Contas ignoradas: {lixo}")
         following = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
         prev = lixo
@@ -161,7 +162,7 @@ def scrape_followings(bot, username, user_input, accounts):
             else:
                 continue
 
-        if lixo == prev and len(users) == prev2 and (prev + prev2) < 1999:
+        if (lixo == prev and len(users) == prev2) or lixo > user_input:
             count += 1
 
         flag = count < 3
@@ -170,6 +171,6 @@ def scrape_followings(bot, username, user_input, accounts):
         time.sleep(1)
 
     users = users.difference(OITO_ODIADOS)
-    users = users.difference(preReqs.load_credentials()[0])
+    users = users.difference(username)
 
     return set(users)

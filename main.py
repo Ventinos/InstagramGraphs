@@ -13,7 +13,7 @@ def main():
         print("[Info] - Followers list loaded successfully, beginning follows scraping")
         username, password = preReqs.load_credentials()
         preReqs.login(bot, username, password)
-        graph = [scrapper.scrapeFollowing(bot, FollowersUnion, 99)]
+        graph = [scrapper.scrapeFollowing(bot, FollowersUnion, 999)]
         bot.quit()
         filename = input('[Required] - Write the name of the new graph file: ')
         file = open(filename, 'wb')
