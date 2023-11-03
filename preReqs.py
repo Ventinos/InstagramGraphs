@@ -56,3 +56,34 @@ def login(bot, username, password):
     login_button = WebDriverWait(bot, 2).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']")))
     login_button.click()
     time.sleep(10)
+
+def getLastCheckpoint(filename):
+    # Verify if the file exists
+    if os.path.isfile(filename):
+        with open(filename, 'r') as file:
+            # Read the file content and get the last checkpoint in it:
+            content = file.read()
+            if content:
+                checkpoint = content.strip()
+            else:
+                checkpoint = None
+    else:
+        # If the file does not exist, returns the last checkpoint as none
+        checkpoint = None
+    return checkpoint
+
+#talvez isso aqui seja util:
+"""
+# Abrir o arquivo em modo de escrita e anexar
+with open(nome_arquivo, 'a') as arquivo:
+    # Realizar outras operações antes de escrever no arquivo
+    for item in lista_de_strings:
+        # Se o último item for None, escrever os itens na ordem natural
+        if ultimo_item is None:
+            arquivo.write(item + '\n')
+        # Caso contrário, escrever a partir do último item encontrado
+        elif item == ultimo_item:
+            ultimo_item = None  # Reiniciar para escrever na ordem natural
+        # Realizar outras operações antes de escrever no arquivo
+        # (coloque suas operações aqui)
+"""
