@@ -10,15 +10,13 @@ from bs4 import BeautifulSoup
 import preReqs
 
 TIMEOUT = 15
-OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs'}
+OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs', 'eddjik_jr'}
 
 
 def scrape_followers(bot, username, user_input):
     bot.get(f'https://www.instagram.com/{username}/')
     time.sleep(3.5)
     users = set()
-    
-    #a gente nunca vai pegar seguidor de conta privada por acidente então tirei a verificação
     
     WebDriverWait(bot, TIMEOUT).until(EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '/followers')]"))).click()
     time.sleep(2)
@@ -46,13 +44,26 @@ def scrape_followers(bot, username, user_input):
 
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
-
+    
     users = users.difference(OITO_ODIADOS)
     users = users.difference(username)
-
+    users = list(users)[:user_input]
     return set(users)
 
+def initDriver():
+    options = webdriver.EdgeOptions()
+    #options = webdriver.ChromeOptions()
+    #adicionei isso aqui pra n mostrar o processo no chrome rolando:
+    #options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument("--log-level=3")
+    mobile_emulation = {
+        "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/90.0.1025.166 Mobile Safari/535.19"}
+    options.add_experimental_option("mobileEmulation", mobile_emulation)
 
+    driver = webdriver.Edge(options=options)
+    return driver
+    
 def scrape():
     credentials = preReqs.load_credentials()
     followers = []
@@ -66,19 +77,10 @@ def scrape():
 
     usernames = input("[Starting Points] - Enter the Instagram usernames you want to scrape (separated by commas): ").split(",")
 
-    options = webdriver.EdgeOptions()
-    #options = webdriver.ChromeOptions()
-    #adicionei isso aqui pra n mostrar o processo no chrome rolando:
-    #options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument("--log-level=3")
-    mobile_emulation = {
-        "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/90.0.1025.166 Mobile Safari/535.19"}
-    options.add_experimental_option("mobileEmulation", mobile_emulation)
-
-    bot = webdriver.Edge(options=options)
+    
     #bot = webdriver.Chrome(executable_path=CM().install(), options=options)
 
+    bot = initDriver()
     preReqs.login(bot, username, password)
 
     #adicionando listas:
@@ -108,7 +110,8 @@ def scrapeFollowing(bot, accounts, user_input):
     #followers eh uma lista de listas de seguidores,
     #followers tem os seguidores do username da relacao
     #retorno de uma dupla de username e seus seguidores
-    #relacao = (nome da conta, lista de seguidores) 
+    #relacao = (nome da conta, lista de seguindo) 
+    usernames = list(usernames)
     relacao = []
     for i in range(len(usernames)):
         relacao.append((usernames[i], following[i]))
@@ -145,8 +148,6 @@ def scrape_followings(bot, username, user_input, accounts):
     lixo = 0
 
     while len(users) < user_input and flag:
-        print(f"{len(users)}/{user_input}")
-        print(f"Contas ignoradas: {lixo}")
         following = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
         prev = lixo
@@ -166,11 +167,11 @@ def scrape_followings(bot, username, user_input, accounts):
             count += 1
 
         flag = count < 3
-
+        print(users)
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
 
     users = users.difference(OITO_ODIADOS)
     users = users.difference(username)
 
-    return set(users)
+    return users
