@@ -110,6 +110,7 @@ def scrapeFollowing(bot, accounts, user_input):
     if prompt == 1:
         following = serializer.deserializeStructure2('TempFollowings')
         cnt = preReqs.load_current()
+        print(f"[Info] - Current progression: {cnt}/{len(usernames)}")
         usernames = usernames[cnt:]
     else:
         cnt = 0
