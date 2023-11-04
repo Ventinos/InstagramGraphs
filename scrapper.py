@@ -68,7 +68,7 @@ def initDriver():
 
 
 def scrape():
-    prompt = int(input('[Required] - Select an account:\nDijkstra Jr.[0]\nThomas Burner[2]\n'))
+    prompt = int(input('[Required] - Select an account:\nDijkstra Jr.[0]\nThomas Burner[2]\nThomas Burner II[4]\n'))
     credentials = preReqs.load_credentials(prompt)
     followers = []
     
@@ -109,6 +109,7 @@ def scrapeFollowing(bot, accounts, user_input):
 
     if prompt == 1:
         following = serializer.deserializeStructure2('TempFollowings')
+        print(following)
         cnt = preReqs.load_current()
         print(f"[Info] - Current progression: {cnt}/{len(usernames)}")
         usernames = usernames[cnt:]
@@ -124,8 +125,8 @@ def scrapeFollowing(bot, accounts, user_input):
         if flag:
             print("[Success]")
             following.append(foll)
-            if i % 15 == 0:
-                print(f"[Checkpoint!] - {i + 1}/{len(usernames)}")
+            if i % 5 == 0:
+                print(f"[Checkpoint!] - {cnt + i + 1}/{len(usernames)}")
                 serializer.serializeStructure2(following, 'TempFollowings')
                 with open('CurrentFollowing.txt', 'w') as file:
                     file.write(f"{i + cnt + 1}")
