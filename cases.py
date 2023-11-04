@@ -33,7 +33,7 @@ def case2():
     print("[Info] - Followers list loaded successfully, beginning follows scraping")
             
     #montagem do grafo:
-    prompt = int(input('[Required] - Select an account:\nDijkstra Jr.[0]\nThomas Burner[2]\nThomas Burner II[4]\n'))
+    prompt = int(input('[Required] - Select an account:\nThomas Burner[0]\nThomas Burner II[2]\n'))
     username, password = preReqs.load_credentials(prompt)
     bot = scrapper.initDriver()
     preReqs.login(bot, username, password)
