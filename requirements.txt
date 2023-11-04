@@ -2,3 +2,4 @@ python-decouple
 selenium==4.9.0
 webdriver_manager
 beautifulsoup4
+networkx[default]
