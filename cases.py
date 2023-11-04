@@ -3,6 +3,7 @@ import scrapper
 import serializer
 import pickle
 
+
 def case1():
     pair, bot = scrapper.scrape()
     #definindo o set maior, uniao dos seguidores das contas de partida:
@@ -23,7 +24,8 @@ def case1():
     #serializacao do grafo:
     serializer.serializeStructure(graph)
     print(f"[Info] - Graph saved!")
-    return FollowersUnion,graph
+    return FollowersUnion, graph
+
 
 def case2():
     #desserializacao do union:
@@ -31,15 +33,17 @@ def case2():
     print("[Info] - Followers list loaded successfully, beginning follows scraping")
             
     #montagem do grafo:
-    username, password = preReqs.load_credentials()
+    prompt = int(input('[Required] - Select an account:\nDijkstra Jr.[0]\nThomas Burner[2]\n'))
+    username, password = preReqs.load_credentials(prompt)
     bot = scrapper.initDriver()
     preReqs.login(bot, username, password)
-    graph = [scrapper.scrapeFollowing(bot, FollowersUnion, 5)]
+    graph = [scrapper.scrapeFollowing(bot, FollowersUnion, 1500)]
     bot.quit()
             
     #serializacao do grafo:
     serializer.serializeStructure(graph)
     return FollowersUnion,graph
+
 
 def case3():
     graph = serializer.deserializeStructure()

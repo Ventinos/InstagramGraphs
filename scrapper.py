@@ -8,9 +8,10 @@ from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager as CM
 from bs4 import BeautifulSoup
 import preReqs
+import serializer
 
 TIMEOUT = 15
-OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs', 'eddjik_jr'}
+OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs', 'eddjik_jr', 'Not_A_Burner01'}
 
 
 def scrape_followers(bot, username, user_input):
@@ -25,8 +26,8 @@ def scrape_followers(bot, username, user_input):
     flag = True
     count = 0
 
+    print(f"{len(users)}/{user_input}")
     while flag and len(users) < user_input:
-        print(f"{len(users)}/{user_input}")
         prev = len(users)
         followers = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
@@ -37,18 +38,19 @@ def scrape_followers(bot, username, user_input):
                 continue
 
         if len(users) == prev:
-            print(count)
             count += 1
 
         flag = count < 5
 
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
+        print(f"{len(users)}/{user_input}")
     
     users = users.difference(OITO_ODIADOS)
     users = users.difference(username)
     users = list(users)[:user_input]
     return set(users)
+
 
 def initDriver():
     options = webdriver.EdgeOptions()
@@ -63,9 +65,11 @@ def initDriver():
 
     driver = webdriver.Edge(options=options)
     return driver
-    
+
+
 def scrape():
-    credentials = preReqs.load_credentials()
+    prompt = int(input('[Required] - Select an account:\nDijkstra Jr.[0]\nThomas Burner[2]\n'))
+    credentials = preReqs.load_credentials(prompt)
     followers = []
     
     if credentials is None:
@@ -99,19 +103,43 @@ def scrape():
 
 
 def scrapeFollowing(bot, accounts, user_input):
-    following = []
-    usernames = accounts
+    usernames = list(accounts)
+    usernames.sort()
+    prompt = int(input('[Required]\nResume scraping[1]\nRestart[2]'))
+
+    if prompt == 1:
+        following = serializer.deserializeStructure2('TempFollowings')
+        cnt = preReqs.load_current()
+        usernames = usernames[cnt:]
+    else:
+        cnt = 0
+        following = []
 
     #adicionando listas:
-    for user in usernames:
+    for i in range(0, len(usernames), 1):
+        user = usernames[i]
         user = user.strip()
-        following.append(scrape_followings(bot, user, user_input, accounts))
+        (flag, foll) = scrape_followings(bot, user, user_input, accounts)
+        if flag:
+            print("[Success]")
+            following.append(foll)
+            if i % 15 == 0:
+                print(f"[Checkpoint!] - {i + 1}/{len(usernames)}")
+                serializer.serializeStructure2(following, 'TempFollowings')
+                with open('CurrentFollowing.txt', 'w') as file:
+                    file.write(f"{i + cnt + 1}")
+
+        else:
+            print("[Info] - Instagram is being uncooperative, saving context and aborting")
+            serializer.serializeStructure2(following, 'TempFollowings')
+            with open('CurrentFollowing.txt', 'w') as file:
+                file.write(f"{i + cnt}")
+            exit()
     
     #followers eh uma lista de listas de seguidores,
     #followers tem os seguidores do username da relacao
     #retorno de uma dupla de username e seus seguidores
-    #relacao = (nome da conta, lista de seguindo) 
-    usernames = list(usernames)
+    #relacao = (nome da conta, lista de seguindo)
     relacao = []
     for i in range(len(usernames)):
         relacao.append((usernames[i], following[i]))
@@ -137,17 +165,21 @@ def scrape_followings(bot, username, user_input, accounts):
     private = soup.find_all('div', class_='_aady')
     if len(private) > 0:
         print(f"[Info] - {username} is a private account.")
-        return users
+        return (True, users)
     
     WebDriverWait(bot, TIMEOUT).until(EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '/following')]"))).click()
     time.sleep(2)
     print(f"[Info] - Scraping following for {username}...")
 
     flag = True
+    flagAux = False
     count = 0
+    count2 = 0
     lixo = 0
 
-    while len(users) < user_input and flag:
+    print(f"{lixo} - {len(users)} - {user_input}")
+
+    while lixo + len(users) < user_input and flag:
         following = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
         prev = lixo
@@ -163,15 +195,22 @@ def scrape_followings(bot, username, user_input, accounts):
             else:
                 continue
 
-        if (lixo == prev and len(users) == prev2) or lixo > user_input:
+        if lixo == prev and len(users) == prev2:
             count += 1
 
-        flag = count < 3
-        print(users)
+        if (lixo - prev) == 16:
+            count2 += 1
+
+        flagAux = count2 < 5
+        flag = count < 3 and flagAux
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
+
+        print(f"{lixo} - {len(users)} - {user_input}")
+
+    sucesso = len(users) != 0 or flagAux
 
     users = users.difference(OITO_ODIADOS)
     users = users.difference(username)
 
-    return users
+    return (sucesso, users)

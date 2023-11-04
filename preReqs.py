@@ -13,16 +13,29 @@ def save_credentials(username, password):
         file.write(f"{username}\n{password}")
 
 
-def load_credentials():
+def load_credentials(accnt):
     if not os.path.exists('credentials.txt'):
         return None
 
     with open('credentials.txt', 'r') as file:
         lines = file.readlines()
         if len(lines) >= 2:
-            return lines[0].strip(), lines[1].strip()
+            return lines[accnt].strip(), lines[accnt+1].strip()
 
     return None
+
+
+def load_current():
+    if not os.path.exists('CurrentFollowing.txt'):
+        return None
+
+    with open('CurrentFollowing.txt', 'r') as file:
+        lines = file.readlines()
+        if len(lines) >= 1:
+            return int(lines[0].strip())
+
+    return None
+
 
 def prompt_credentials():
     username = input("Enter your Instagram username: ")
@@ -57,6 +70,7 @@ def login(bot, username, password):
     login_button.click()
     time.sleep(10)
 
+
 def getLastCheckpoint(filename):
     # Verify if the file exists
     if os.path.isfile(filename):
@@ -71,6 +85,7 @@ def getLastCheckpoint(filename):
         # If the file does not exist, returns the last checkpoint as none
         checkpoint = None
     return checkpoint
+
 
 #talvez isso aqui seja util:
 """
