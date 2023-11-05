@@ -1,7 +1,6 @@
 import preReqs
 import scrapper
 import serializer
-import pickle
 
 
 def case1():
@@ -33,7 +32,7 @@ def case2():
     print("[Info] - Followers list loaded successfully, beginning follows scraping")
             
     #montagem do grafo:
-    prompt = int(input('[Required] - Select an account:\nThomas Burner[0]\nThomas Burner II[2]\n'))
+    prompt = preReqs.promptAcc()
     username, password = preReqs.load_credentials(prompt)
     bot = scrapper.initDriver()
     preReqs.login(bot, username, password)

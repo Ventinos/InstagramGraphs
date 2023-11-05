@@ -13,6 +13,10 @@ def save_credentials(username, password):
         file.write(f"{username}\n{password}")
 
 
+def promptAcc():
+    return int(input('[Required] - Select an account:\nThomas Burner[0]\n'))
+
+
 def load_credentials(accnt):
     if not os.path.exists('credentials.txt'):
         return None

@@ -68,7 +68,7 @@ def initDriver():
 
 
 def scrape():
-    prompt = int(input('[Required] - Select an account:\nThomas Burner[0]\nThomas Burner II[2]\n'))
+    prompt = preReqs.promptAcc()
     credentials = preReqs.load_credentials(prompt)
     followers = []
     
