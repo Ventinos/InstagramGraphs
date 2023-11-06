@@ -11,7 +11,7 @@ import preReqs
 import serializer
 
 TIMEOUT = 15
-OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs', 'eddjik_jr', 'Not_A_Burner01'}
+OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs', 'burnelius0001', 'Not_A_Burner01'}
 
 
 def scrape_followers(bot, username, user_input):
@@ -126,7 +126,7 @@ def scrapeFollowing(bot, accounts, user_input):
             print("[Success]")
             following.append(foll)
             if i % 5 == 0:
-                print(f"[Checkpoint!] - {cnt + i + 1}/{len(usernames)}")
+                print(f"[Checkpoint!] - {cnt + i + 1}/{len(accounts)}")
                 serializer.serializeStructure2(following, 'TempFollowings')
                 with open('CurrentFollowing.txt', 'w') as file:
                     file.write(f"{i + cnt + 1}")
