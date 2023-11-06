@@ -14,7 +14,7 @@ def save_credentials(username, password):
 
 
 def promptAcc():
-    return int(input('[Required] - Select an account:\nThomas Burner[0]\n'))
+    return int(input('[Required] - Select an account:\nThomas Burner[0]\nBurnelius[2]'))
 
 
 def load_credentials(accnt):
