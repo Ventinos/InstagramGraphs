@@ -9,6 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager as CM
 from bs4 import BeautifulSoup
 from src import preReqs
 from src import serializer
+import os
 
 TIMEOUT = 15
 OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs', 'eddjik_jr', 'Not_A_Burner01'}
@@ -108,7 +109,8 @@ def scrapeFollowing(bot, accounts, user_input):
     prompt = int(input('[Required]\nResume scraping[1 ]\nRestart[2]'))
 
     if prompt == 1:
-        following = serializer.deserializeStructure2('TempFollowings')
+        path = 'bins/TempFollowings'
+        following = serializer.deserializeStructurePath(path)
         print(following)
         cnt = preReqs.load_current()
         print(f"[Info] - Current progression: {cnt}/{len(usernames)}")
@@ -127,14 +129,18 @@ def scrapeFollowing(bot, accounts, user_input):
             following.append(foll)
             if i % 5 == 0:
                 print(f"[Checkpoint!] - {cnt + i + 1}/{len(usernames)}")
-                serializer.serializeStructure2(following, 'TempFollowings')
+                path = 'bins/TempFollowings'
+                serializer.serializeStructurePath(following, path)
                 with open('CurrentFollowing.txt', 'w') as file:
                     file.write(f"{i + cnt + 1}")
 
         else:
             print("[Info] - Instagram is being uncooperative, saving context and aborting")
-            serializer.serializeStructure2(following, 'TempFollowings')
-            with open('CurrentFollowing.txt', 'w') as file:
+            path = 'bins/TempFollowings'
+            serializer.serializeStructurePath(following, path)
+            
+            pathTxt = os.path.join('txts','CurrentFollowing.txt')
+            with open(pathTxt, 'w') as file:
                 file.write(f"{i + cnt}")
             exit()
     

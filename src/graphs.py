@@ -5,8 +5,8 @@ def getNecessaryData():
     set = input('What set do you want to use to draw the graph? ')
     followings = input('What followings file do you want to use to draw the graph? ') or 'TempFollowings'
     
-    set = os.path.join('graphs',set)
-    followings = os.path.join('graphs',followings)
+    set = os.path.join('bins',set)
+    followings = os.path.join('bins',followings)
     
     try:
         following = serializer.deserializeStructurePath(followings)
