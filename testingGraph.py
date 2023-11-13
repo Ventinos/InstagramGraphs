@@ -1,22 +1,20 @@
-import serializer
+from src import graphs
 import networkx as nx
 import matplotlib.pyplot as plt
 
-following = serializer.deserializeStructure2('TempFollowings')
-followers = serializer.deserializeStructure2('comp')
-followers = list(followers)
+def main():
+    following = None
+    followers = None
+    
+    while following == None and followers == None:
+        following, followers = graphs.getNecessaryData()
 
-graph = []
-for i in range(len(following)):
-    following[i]=list(following[i])
+    graph = graphs.simpleGraph(following, followers)
+    G = nx.Graph()
+    G.add_edges_from(graph)
+    pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=True, node_size=200, node_color='lightgreen', font_size=10, font_color='black', font_weight='bold', width=2, edge_color='skyblue')
+    plt.show()
 
-for i in range(len(following)):
-    for j in range(len(following[i])):
-        graph.append((followers[i],following[i][j]))
-#print(graph)
-
-G = nx.Graph()
-G.add_edges_from(graph)
-pos = nx.spring_layout(G)
-nx.draw(G, pos, with_labels=True, node_size=200, node_color='lightgreen', font_size=10, font_color='black', font_weight='bold', width=2, edge_color='skyblue')
-plt.show()
+if __name__ == '__main__':
+    main()

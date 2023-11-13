@@ -1,6 +1,5 @@
-import cases
-import serializer
-
+from src import cases
+from src import serializer
 
 def main():
     prompt = int(input('[Required]:\nScrape new followers[1]\nLoad saved followers[2]\nLoad saved graph[3]\n'))

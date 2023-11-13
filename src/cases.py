@@ -1,7 +1,6 @@
-import preReqs
-import scrapper
-import serializer
-
+from src import preReqs
+from src import scrapper
+from src import serializer
 
 def case1():
     pair, bot = scrapper.scrape()

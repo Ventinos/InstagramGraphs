@@ -7,11 +7,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager as CM
 from bs4 import BeautifulSoup
-import preReqs
-import serializer
+from src import preReqs
+from src import serializer
 
 TIMEOUT = 15
-OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs', 'burnelius0001', 'Not_A_Burner01'}
+OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs', 'eddjik_jr', 'Not_A_Burner01'}
 
 
 def scrape_followers(bot, username, user_input):
@@ -68,7 +68,7 @@ def initDriver():
 
 
 def scrape():
-    prompt = preReqs.promptAcc()
+    prompt = int(input('[Required] - Select an account:\nThomas Burner[0]\nThomas Burner II[2]\n'))
     credentials = preReqs.load_credentials(prompt)
     followers = []
     
@@ -105,7 +105,7 @@ def scrape():
 def scrapeFollowing(bot, accounts, user_input):
     usernames = list(accounts)
     usernames.sort()
-    prompt = int(input('[Required]\nResume scraping[1]\nRestart[2]'))
+    prompt = int(input('[Required]\nResume scraping[1 ]\nRestart[2]'))
 
     if prompt == 1:
         following = serializer.deserializeStructure2('TempFollowings')
@@ -126,7 +126,7 @@ def scrapeFollowing(bot, accounts, user_input):
             print("[Success]")
             following.append(foll)
             if i % 5 == 0:
-                print(f"[Checkpoint!] - {cnt + i + 1}/{len(accounts)}")
+                print(f"[Checkpoint!] - {cnt + i + 1}/{len(usernames)}")
                 serializer.serializeStructure2(following, 'TempFollowings')
                 with open('CurrentFollowing.txt', 'w') as file:
                     file.write(f"{i + cnt + 1}")
