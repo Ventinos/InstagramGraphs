@@ -10,10 +10,12 @@ def main():
         following, followers = graphs.getNecessaryData()
 
     graph = graphs.simpleGraph(following, followers)
-    G = nx.Graph()
+    G = nx.DiGraph()
     G.add_edges_from(graph)
-    pos = nx.spring_layout(G)
-    nx.draw(G, pos, with_labels=True, node_size=200, node_color='lightgreen', font_size=10, font_color='black', font_weight='bold', width=2, edge_color='skyblue')
+    G.remove_edges_from(nx.selfloop_edges(G))
+    pos = nx.kamada_kawai_layout(G)
+    #pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=True, node_size=100, node_color='lightgreen', font_size=8, font_color='black', font_weight='bold', width=1, edge_color='skyblue')
     plt.show()
 
 if __name__ == '__main__':
