@@ -1,11 +1,16 @@
 from src import serializer
+import os
 
 def getNecessaryData():
     set = input('What set do you want to use to draw the graph? ')
     followings = input('What followings file do you want to use to draw the graph? ') or 'TempFollowings'
+    
+    set = os.path.join('graphs',set)
+    followings = os.path.join('graphs',followings)
+    
     try:
-        following = serializer.deserializeStructure2(followings)
-        followers = serializer.deserializeStructure2(set)
+        following = serializer.deserializeStructurePath(followings)
+        followers = serializer.deserializeStructurePath(set)
         followers = list(followers)
     except:
         return None, None

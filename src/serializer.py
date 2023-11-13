@@ -17,9 +17,12 @@ def deserializeStructure():
     structure = pickle.load(file)
     return structure
 
-
 def deserializeStructure2(filename):
     file = open(filename, 'rb')
     structure = pickle.load(file)
     return structure
 
+def deserializeStructurePath(path):
+    with open(path,'rb') as file:
+        structure = pickle.load(file)
+    return structure

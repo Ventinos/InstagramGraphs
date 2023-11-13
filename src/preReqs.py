@@ -9,7 +9,8 @@ from webdriver_manager.chrome import ChromeDriverManager as CM
 
 
 def save_credentials(username, password):
-    with open('credentials.txt', 'w') as file:
+    path = os.path.join('txts','credentials.txt')
+    with open(path, 'w') as file:
         file.write(f"{username}\n{password}")
 
 
@@ -18,10 +19,11 @@ def promptAcc():
 
 
 def load_credentials(accnt):
-    if not os.path.exists('credentials.txt'):
+    path = os.path.join('txts','credentials.txt')
+    if not os.path.exists(path):
         return None
 
-    with open('credentials.txt', 'r') as file:
+    with open(path, 'r') as file:
         lines = file.readlines()
         if len(lines) >= 2:
             return lines[accnt].strip(), lines[accnt+1].strip()
@@ -30,10 +32,11 @@ def load_credentials(accnt):
 
 
 def load_current():
-    if not os.path.exists('CurrentFollowing.txt'):
+    path = os.path.join('txts','CurrentFollowing.txt')
+    if not os.path.exists(path):
         return None
 
-    with open('CurrentFollowing.txt', 'r') as file:
+    with open(path, 'r') as file:
         lines = file.readlines()
         if len(lines) >= 1:
             return int(lines[0].strip())

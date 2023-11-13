@@ -24,7 +24,6 @@ def case1():
     print(f"[Info] - Graph saved!")
     return FollowersUnion, graph
 
-
 def case2():
     #desserializacao do union:
     FollowersUnion = serializer.deserializeStructure()
@@ -41,7 +40,6 @@ def case2():
     #serializacao do grafo:
     serializer.serializeStructure(graph)
     return FollowersUnion,graph
-
 
 def case3():
     graph = serializer.deserializeStructure()
