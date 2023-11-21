@@ -16,7 +16,7 @@ def case1():
     print(f"[Info] - Collective followers list saved!")
             
     #montando grafo:
-    graph = [scrapper.scrapeFollowing(bot, FollowersUnion, 5)]
+    graph = [scrapper.scrapeFollowing(bot, FollowersUnion, 1500)]
     bot.quit()
             
     #serializacao do grafo:
