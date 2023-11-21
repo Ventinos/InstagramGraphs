@@ -12,7 +12,7 @@ from src import serializer
 import os
 
 TIMEOUT = 15
-OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs', 'eddjik_jr', 'Not_A_Burner01'}
+OITO_ODIADOS = {'technologies', 'explore', 'direct', 'blog', 'reels', 'legal', 'about', 'docs', 'burnelius0001', 'Not_A_Burner01'}
 
 
 def scrape_followers(bot, username, user_input):
@@ -69,7 +69,7 @@ def initDriver():
 
 
 def scrape():
-    prompt = int(input('[Required] - Select an account:\nThomas Burner[0]\nThomas Burner II[2]\n'))
+    prompt = int(input('[Required] - Select an account:\nThomas Burner[0]\nBurnelius[2]\n'))
     credentials = preReqs.load_credentials(prompt)
     followers = []
     
@@ -144,13 +144,22 @@ def scrapeFollowing(bot, accounts, user_input):
                 file.write(f"{i + cnt}")
             exit()
     
+    print(f"[Final checkpoint!]")
+    serializer.serializeStructure2(following, 'TempFollowings')
+    with open('CurrentFollowing.txt', 'w') as file:
+        file.write(f"{len(accounts)}")
+
     #followers eh uma lista de listas de seguidores,
     #followers tem os seguidores do username da relacao
     #retorno de uma dupla de username e seus seguidores
     #relacao = (nome da conta, lista de seguindo)
+
+    usernames2 = list(accounts)
+    usernames2.sort()
+
     relacao = []
-    for i in range(len(usernames)):
-        relacao.append((usernames[i], following[i]))
+    for i in range(len(usernames2)):
+        relacao.append((usernames2[i], following[i]))
     return relacao
 
 
