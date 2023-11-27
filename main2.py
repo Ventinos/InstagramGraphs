@@ -31,46 +31,46 @@ def main():
                 pagerank = nx.pagerank(G)
 
                 #gera um array chamado "cores" que possui os itens de cada chave do dicionario "pagerank", na ordem em que aparece os nos no G.nodes()
-                cores = [pagerank.get(no) for no in G.nodes()]
+                colors = [pagerank.get(no) for no in G.nodes()]
                 
                 #pinta cada no com sua cor correspondente (correspondencia via equivalencia de posicao entre os arrays "cores" e G.nodes()
-                nx.draw(G, pos, with_labels=True, node_size=100, node_color = cores, font_size=8, font_color='black', 
+                nx.draw(G, pos, with_labels=True, node_size=100, node_color = colors, font_size=8, font_color='black',
                         font_weight='bold', width=1, edge_color='skyblue', cmap=plt.cm.plasma)
                 plt.show()
             case 3:
                 pos = nx.kamada_kawai_layout(G)
                 #retorna uma dupla cm 2 dicionarios com ranks, um dos portais e outro das autoridades
-                coresHits = []
+                colorsHits = []
                 (hub,autho) = nx.hits(G)
                 for name in G.nodes():
                     indHub = hub.get(name)
                     indAutho = autho.get(name)
                     if indAutho-indHub<0.00 : #caso seja portal
-                        coresHits.append('pink')
+                        colorsHits.append('pink')
                     else : #caso seja autoridade
-                        coresHits.append('yellow')
+                        colorsHits.append('yellow')
 
-                nx.draw(G, pos, with_labels=True, node_size=100, node_color = coresHits, font_size=8, font_color='black', 
+                nx.draw(G, pos, with_labels=True, node_size=100, node_color = colorsHits, font_size=8, font_color='black',
                         font_weight='bold', width=1, edge_color='skyblue')
                 plt.show()
             case 4:
-                totalCaminhos = 0
-                nroCaminhos = 0
+                totalPaths = 0
+                nPaths = 0
                 for i in G.nodes():
                     for j in G.nodes():
                         if i!=j :
                             try:
-                                caminho = nx.shortest_path(G,i,j)
-                                nroCaminhos+=1
-                                totalCaminhos += len(caminho)
+                                path = nx.shortest_path(G,i,j)
+                                nPaths+=1
+                                totalPaths += len(path)
                             except nx.NetworkXNoPath:
                                 continue
 
-                print('media = ' + str(float(totalCaminhos/nroCaminhos)) + '\n')
+                print('Average value = ' + str(float(totalPaths/nPaths)) + '\n')
             case 5:
                 break
             case _:
-                print('erro')
+                print('error')
 
 
 if __name__ == '__main__':

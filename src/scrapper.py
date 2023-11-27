@@ -192,14 +192,14 @@ def scrape_followings(bot, username, user_input, accounts):
     flagAux = False
     count = 0
     count2 = 0
-    lixo = 0
+    garbage = 0
 
-    print(f"{lixo} - {len(users)} - {user_input}")
+    print(f"{garbage} - {len(users)} - {user_input}")
 
-    while lixo + len(users) < user_input and flag:
+    while garbage + len(users) < user_input and flag:
         following = bot.find_elements(By.XPATH, "//a[contains(@href, '/')]")
 
-        prev = lixo
+        prev = garbage
         prev2 = len(users)
 
         for i in following:
@@ -208,14 +208,14 @@ def scrape_followings(bot, username, user_input, accounts):
                 if accName in accounts:
                     users.add(accName)
                 else:
-                    lixo += 1
+                    garbage += 1
             else:
                 continue
 
-        if lixo == prev and len(users) == prev2:
+        if garbage == prev and len(users) == prev2:
             count += 1
 
-        if (lixo - prev) == 16:
+        if (garbage - prev) == 16:
             count2 += 1
 
         flagAux = count2 < 5
@@ -223,11 +223,11 @@ def scrape_followings(bot, username, user_input, accounts):
         ActionChains(bot).send_keys(Keys.END).perform()
         time.sleep(1)
 
-        print(f"{lixo} - {len(users)} - {user_input}")
+        print(f"{garbage} - {len(users)} - {user_input}")
 
-    sucesso = len(users) != 0 or flagAux
+    success = len(users) != 0 or flagAux
 
     users = users.difference(OITO_ODIADOS)
     users = users.difference(username)
 
-    return (sucesso, users)
+    return (success, users)
