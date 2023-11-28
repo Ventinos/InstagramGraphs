@@ -1,4 +1,5 @@
 from src import graphs
+from src import serializer
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -15,8 +16,8 @@ def main():
     G = nx.DiGraph()
     G.add_edges_from(graph)
     G.remove_edges_from(nx.selfloop_edges(G))
-    while option != 5:
-        print('Option 1: Print Graph\nOption 2: Page Rank\nOption 3: Hits\nOption 4: Six Degrees of Separation\nOption 5: Exit\n')
+    while option != 6:
+        print('Option 1: Print Graph\nOption 2: Page Rank\nOption 3: Hits\nOption 4: Six Degrees of Separation\nOption 5: Load Bands Graph\nOption 6: Exit')
         option = int(input('Select an option: '))
         match option:
             case 1:
@@ -68,6 +69,21 @@ def main():
 
                 print('Average value = ' + str(float(totalPaths/nPaths)) + '\n')
             case 5:
+                G = graphs.bands_graph()
+                korn  = serializer.deserializeStructurePath('./bins/korn_fans')
+                pos = nx.bipartite_layout(G,korn)
+
+                color_map = []
+                for node in G:
+                    if node in korn:
+                        color_map.append('black')
+                    else: 
+                        color_map.append('pink')
+
+                nx.draw(G, pos, with_labels=False, node_size=70, node_color=color_map, width=3, edge_color='skyblue')
+                plt.show()
+                
+            case 6:
                 break
             case _:
                 print('error')

@@ -27,3 +27,7 @@ def simpleGraph(following,followers):
             graph.append((following[i][j],followers[i]))
     
     return graph
+
+def bands_graph():
+    G = serializer.deserializeStructurePath('./bins/kornXswift')
+    return G
