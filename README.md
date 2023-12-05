@@ -20,8 +20,10 @@ Make sure you have at least python 3.10 installed and pip.
 
 We have two main applications in this repo, main.py and main2.py ((very creative, we know)), the former is responsible for the web scrapping menu and functionalities, while the latter is responsible for the building of the graph structure, visualization via matplotlib + networkx, and the application of the algorithms on the generated graph.
 
-We have a few sets and follwings binaries for test purpose at the repo, free feel to use them to see how the main2.py works. 
-* PetSet + PetFollowing build the graph of the Tutorial Education Program (PET) of the IT department of our university.
-* CompSet + CompFollowing build the graph of the Samba Drum of IT department of our university + PET + IT department athletics team.
+We have a few sets and follwings binaries for test purposes at the repo, free feel to use them to see how the main2.py works. 
+* PetSet + PetFollowing are used to build the graph of the Tutorial Education Program (PET) of the IT department of our university.
+* CompSet + CompFollowing are used to build the graph of the musical team (refered to here in Brazil as a "Bateria") of the IT department of our university + PET + IT department athletics team.
 
- 
+### Scraping:
+
+In very simple terms, we utilize selenium and beautiful
