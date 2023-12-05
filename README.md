@@ -1,5 +1,4 @@
-# InstagramGraphs, aka:
-# Instagram data extraction + Visualization via Digraphs:
+# InstagramGraphs, aka: Instagram data extraction + Visualization via Digraphs:
 
 ## The main idea 💡:
 
