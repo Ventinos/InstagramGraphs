@@ -35,3 +35,14 @@ In very simple terms, we utilize selenium and beautifulsoup to automate the proc
 		* After accessing a few of the accounts in the set, our own account will start to have it's actions restricted by Instagram ((not a ban yet)) and when it happens, for an unspecified amount of time and for every browser or application we use, our account will not be able to access the followings tab of other accounts. Therefore we found a way to check if "null data" is being scraped and when that happens the program will save the progress and close itself.
 		* There are many other instances where saving our progress would be valuable, in case the computer spontaneously combusts or someone steps on the router cable. Therefore we chose to establish a checkpoint every 5 iterations of the scraping loop, so we never stand to loose too much work.
 		* If the program comes across a private account it will not be able to access the followings tab and will halt. Therefore we utilized beautifulsoup to check the HTML contents of the page and see if it has the text containers related to private accounts, if it does the program will simply go to the next account and the current one will remain as following no one. This method can also be applied to checking if an account no longer exists, which can happen if it is deleted in between the generation of the set and it's turn to be scraped.
+* After the followers scrape, we save our set in a binary using pickle lib, because we're going to need it to build the graph later.
+* As we scrape who each account follows in the set, we make our checkpoints at TempFollowing binary and in a .txt file, so if you want to stop scrapping a set and go to another one, rename TempFollowings and the .txt .
+* With this two binaries, the set and the followings, you can run main2.py and use the graph functionalities.
+* There's a lot going on at the codebase, so if you want more details, fell free to have a look at it.
+
+## Algorithms and visualization:
+
+All you need to know about the graphs and the way it works it's at this file and at the graph package, it's pretty simple, so any doubt you can just take the code and read it. We're mainly using the algorithms implementations of the networkx lib, so any doubt about the code take a look at the lib documentation.
+
+## Obs:
+This is a college project made in basically a month so, there is a lot of things that can be improved and better organized, feel free to make a push request or a fork and help us to improve this project!
