@@ -1,9 +1,10 @@
-# InstagramGraphs
-## aka: Instagram data extraction + Visualization via Digraphs:
+InstagramGraphs
+AKA: Instagram data extraction + Visualization via Digraphs:
+======
 
 ## The main idea 💡:
 
-We made this for a Graph Theory class, and the main idea was to get the followers of big accounts and build a community. We're going to call it 'bubble' (the bubble It's the union of the followers of our start accounts),   and after that, we connect the accounts of the bubble, we do this by looking at who each person of the bubble follows that it's also in the bubble. After that we manage the data to build a graph, visualize it and apply some algorithms on it, to see how the people interact in our bubble.
+We made this for a Graph Theory course, and the main idea was to get the followers of big accounts and build a community. We're going to call it 'bubble' (the bubble is the union of the followers of our starting accounts), and after that, we connect the accounts of the bubble, we do this by looking at who each person of the bubble follows that it's also in the bubble. After that we manage the data to build a graph, visualize it and apply some algorithms on it, to see how the people interact in our bubble.
 
 Here it's the link to a presentation that we've made to explain how the program works:
 //link
