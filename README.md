@@ -1,23 +1,24 @@
-InstagramGraphs
+InstagramGraphs,
 AKA: Instagram data extraction + Visualization via Digraphs:
 ======
 
-## The main idea 💡:
+## Proposal:
 
-We made this for a Graph Theory course, and the main idea was to get the followers of big accounts and build a community. We're going to call it 'bubble' (the bubble is the union of the followers of our starting accounts), and after that, we connect the accounts of the bubble, we do this by looking at who each person of the bubble follows that it's also in the bubble. After that we manage the data to build a graph, visualize it and apply some algorithms on it, to see how the people interact in our bubble.
+We were tasked with mapping a problem to a graph solution for a Graph Theory course at university, we chose to integrate web scraping and extract data from Instagram users and map their connections to a directed graph. We begin with scraping the followers of a large account, whom we can assume will have things in common because they follow said account, and creating a set; afterwards we ((try to)) check each and every one of them to see if they follow anyone in the set, if they do we establish a connection between them in the graph.
 
-Here it's the link to a presentation that we've made to explain how the program works:
-//link
+With the scraping done, we convert it to a graph object and apply some algorithms to it in order to visualize the trends, biases and interactions within the set, all with an intuitive and usually comprehensible visual interface.
+
+Here is the link to a presentation that we've made to explain how the program works:
+[Link](https://docs.google.com/presentation/d/1K2dQcy0U66EgZyk2QPHw07vJrq5e17elqSTDnYIH500/edit?usp=sharing)
 
 ## Install the dependencies:
 
-Make sure you do have at least python 3.10 installed and pip.
+Make sure you have at least python 3.10 installed and pip.
 ```pip install -r requirements.txt```
 
 ## How it works:
 
-We have two main applications in this repo, the main.py and the main2.py, the main.py it's responsible for the web scrapping menu and functionalities, while the main2.py it's responsible for 
-the building of the graph structure, visualization via matplotlib + networkx, and the algorithms application on the generated graph.
+We have two main applications in this repo, main.py and main2.py ((very creative, we know)), the former is responsible for the web scrapping menu and functionalities, while the latter is responsible for the building of the graph structure, visualization via matplotlib + networkx, and the application of the algorithms on the generated graph.
 
 We have a few sets and follwings binaries for test purpose at the repo, free feel to use them to see how the main2.py works. 
 * PetSet + PetFollowing build the graph of the Tutorial Education Program (PET) of the IT department of our university.
