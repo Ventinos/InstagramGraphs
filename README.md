@@ -5,7 +5,7 @@ AKA: Instagram data extraction + Visualization via Digraphs:
 
 ## Credits:
 
-Our code is primarily based upon [this](https://github.com/redianmarku/instagram-follower-scraper/tree/master) repo, although several modifications and additions were made, we could not have accomplished this without it, so many thanks to TopNotch Programmer
+Our code is primarily based upon [this](https://github.com/redianmarku/instagram-follower-scraper/tree/master) repo, although several modifications and additions were made we could not have accomplished this without it, so many thanks to TopNotch Programmer
 
 ## Proposal:
 
