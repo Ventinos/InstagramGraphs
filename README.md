@@ -3,6 +3,10 @@ InstagramGraphs,
 AKA: Instagram data extraction + Visualization via Digraphs:
 ======
 
+## Credits:
+
+Our code is primarily based upon [this](https://github.com/redianmarku/instagram-follower-scraper/tree/master) repo, although several modifications and additions were made, we could not have accomplished this without it, so many thanks to TopNotch Programmer
+
 ## Proposal:
 
 We were tasked with mapping a problem to a graph solution for a Graph Theory course at university, we chose to integrate web scraping and extract data from Instagram users and map their connections to a directed graph. We begin with scraping the followers of a large account, whom we can assume will have things in common because they follow said account, and creating a set; afterwards we ((try to)) check each and every one of them to see if they follow anyone in the set, if they do we establish a connection between them in the graph.
